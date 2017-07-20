@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context="mydog.haley.com.mynavigation.TimeRecordActivity">
+	
+	<!--스톱워치 화면-->
+	<!--색은 다 바꿀예정-->
+	<!--위에 AppBar 없애고 싶은데 -->
+	
+	<View
+		android:id="@+id/view"
+		android:layout_width="0dp"
+		android:layout_height="@dimen/nav_header_height"
+		android:background="@color/colorAccent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"/>
+	
+	<!--Chronometer로 대체 -->
+	<Chronometer
+		android:id="@+id/chronometer"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:format="00:00:00"
+		android:textColor="#ffffff"
+		android:textSize="@dimen/stopwatch"
+		android:textStyle="bold"
+		app:layout_constraintBottom_toBottomOf="@+id/view"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="@+id/view"/>
+	
+	<TextView
+		android:id="@+id/stopwatch"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="00:00:00"
+		android:textColor="#ffffff"
+		android:textSize="@dimen/stopwatch"
+		android:textStyle="bold"
+		android:visibility="gone"
+		app:layout_constraintBottom_toBottomOf="@+id/view"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="@+id/view"/>
+	
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="강남이는 산책이 너무 좋아요"
+		android:textColor="#ffffff"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/chronometer"/>
+	
+	<View
+		android:id="@+id/view2"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/view"
+		app:layout_constraintVertical_bias="0.0"
+		tools:layout_editor_absoluteX="0dp"/>
+	
+	
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/stop_bt"
+		android:layout_width="100dp"
+		android:layout_height="100dp"
+		android:onClick="onStopClick"
+		android:src="@drawable/ic_stop"
+		app:layout_constraintBottom_toBottomOf="@+id/view2"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="@+id/view2"/>
+	
+	<!--<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/activity_vertical_margin"
+		android:text="산책 종료"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/stop_bt"/>-->
+
+
+</android.support.constraint.ConstraintLayout>
+
