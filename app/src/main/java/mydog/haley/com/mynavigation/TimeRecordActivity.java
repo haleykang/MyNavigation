@@ -47,7 +47,7 @@ public class TimeRecordActivity extends AppCompatActivity {
 
         Log.v(TAG, "onCreate()");
 
-        this.mChronometer = (Chronometer)findViewById(R.id.chronometer);
+        this.mChronometer = (Chronometer) findViewById(R.id.chronometer);
 
         // choronometer 포멧을 HH:MM:SS 형태로 변경하기
         this.mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
@@ -75,7 +75,7 @@ public class TimeRecordActivity extends AppCompatActivity {
         try {
             mDBOpenHelper.open();
 
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -92,16 +92,16 @@ public class TimeRecordActivity extends AppCompatActivity {
                 .setPositiveButton("예", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.v(TAG, "산책 최종 중지");
+                        Log.v(TAG, "산책 종료");
                         // Chronometer 정지 -- ok
                         mChronometer.stop(); // setBase 타임에 영향 안줌
                         mStopTime = SystemClock.elapsedRealtime();
                         // 최종 산책 시간 저장
-                        mResultTime = mStopTime - mChronometer.getBase();
+                        mResultTime = (mStopTime - mChronometer.getBase()) / 1000; // 초 단위로 출력 -> 좋다
                         Log.v(TAG, "mResultTime : " + mResultTime);
 
-                        Toast.makeText(context, "산책 시간 : " + getStrTime(mResultTime), Toast.LENGTH_SHORT).show();
-                        WalkTimeVO vo = new WalkTimeVO("1111title", "1111content", mResultTime);
+                        Toast.makeText(context, "산책 시간 : " + mResultTime + "초", Toast.LENGTH_SHORT).show();
+                        WalkTimeVO vo = new WalkTimeVO("title", "content", mResultTime);
                         // 데이터베이스에 입력
                         mDBOpenHelper.insertDiary(vo);
                         // 데이터베이스 close();
@@ -130,9 +130,9 @@ public class TimeRecordActivity extends AppCompatActivity {
 
     private String getStrTime(long time) {
 
-        int h = (int)(time / 3600000);
-        int m = (int)(time - h * 3600000) / 60000;
-        int s = (int)(time - h * 3600000 - m * 60000) / 1000;
+        int h = (int) (time / 3600000);
+        int m = (int) (time - h * 3600000) / 60000;
+        int s = (int) (time - h * 3600000 - m * 60000) / 1000;
         String hh = h < 10 ? "0" + h : h + "";
         String mm = m < 10 ? "0" + m : m + "";
         String ss = s < 10 ? "0" + s : s + "";
