@@ -26,7 +26,7 @@ public class DataBase {
 
         public static final String _CREATE = "create table " + _TABLENAME + "("
                 + CODE + " integer primary key autoincrement , "
-                + TITLE + " text not null,"
+                + TITLE + " text default(strftime('%d','now','localtime')) not null,"
                 + CONTENT + " text not null,"
                 + TIME + " integer not null,"
                 + DATE_WITH_TIME + " datetime default (datetime('now','localtime'))" + ")";
