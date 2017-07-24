@@ -8,13 +8,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private TextView walkTimeTextView;
+    private static final String TAG = "**MainActivity**";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,15 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+        this.walkTimeTextView = (TextView)findViewById(R.id.walk_time);
+        // 데이터베이스에서 오늘 날짜와 동일한 데이터 값 가져오기
+        // 다 저장
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date date = new Date();
+
+        Log.v(TAG, "date : " + dateFormat.format(date));
+
 
     }
 
@@ -91,6 +110,8 @@ public class MainActivity extends AppCompatActivity
         if(id == R.id.nav_report) {
             // Handle the camera action
         } else if(id == R.id.nav_diary) {
+
+            startActivity(new Intent(this, DiaryActivity.class));
 
         } else if(id == R.id.nav_awards) {
 

@@ -21,6 +21,8 @@
 		</activity>
 		<activity android:name=".TimeRecordActivity">
 		</activity>
+		<activity android:name=".DiaryActivity">
+		</activity>
 	</application>
 
 </manifest>

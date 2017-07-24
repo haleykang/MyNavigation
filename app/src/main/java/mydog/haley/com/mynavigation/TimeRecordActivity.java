@@ -3,9 +3,9 @@ package mydog.haley.com.mynavigation;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Chronometer;
 import android.widget.Toast;
 
-// 산책 시간 기록하는 액티비티 -> 핸들러 이용
+// 산책 시간 기록하는 액티비티 -> 이 클래스는 정리가 필요함 !!!!
 public class TimeRecordActivity extends AppCompatActivity {
 
     private static final String TAG = "**TimeRecordActivity**";
@@ -22,15 +22,12 @@ public class TimeRecordActivity extends AppCompatActivity {
     // 산책을 시작합니다. 3,2,1 -> 이 페이지로 넘어오자 마자 기록 시작
 
 
-    // 세상에... Chrometer라는 손쉬운 타이머 위젯이 있었음...미친... -> 바꾸자... ㅠㅠ
-
     // 스톱워치 텍스트 뷰 -> Chronometer로 대체
     /*private static TextView mStopwatch;*/
     private Chronometer mChronometer;
-    private FloatingActionButton mStopBt;
 
     // 산책 시작 시간
-    private long mStartTime;
+    // private long mStartTime; // 따로 선언 안해도 됨!!!!
 
     // 산책 종료 시간
     private long mStopTime;
@@ -38,8 +35,7 @@ public class TimeRecordActivity extends AppCompatActivity {
     // 최종 산책 시간
     private long mResultTime;
 
-
-
+    private DBOpenHelper mDBOpenHelper;
 
     /*private static long mResultTime;*/
 
@@ -51,9 +47,8 @@ public class TimeRecordActivity extends AppCompatActivity {
 
         Log.v(TAG, "onCreate()");
 
-  /*      this.mStopwatch = (TextView)findViewById(R.id.stopwatch);*/
         this.mChronometer = (Chronometer)findViewById(R.id.chronometer);
-        this.mStopBt = (FloatingActionButton)findViewById(R.id.stop_bt);
+
         // choronometer 포멧을 HH:MM:SS 형태로 변경하기
         this.mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
@@ -72,8 +67,17 @@ public class TimeRecordActivity extends AppCompatActivity {
         this.mChronometer.start();
         // 산책 시작 시간 저장
         Log.v(TAG, "산책 시간 기록 시작");
-        mStartTime = SystemClock.elapsedRealtime();
-        Log.v(TAG, "mStartTime : " + mStartTime);
+
+        // 데이터베이스 생성
+        mDBOpenHelper = new DBOpenHelper(this);
+
+        // 데이터베이스 오픈
+        try {
+            mDBOpenHelper.open();
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
 
 
     } // end of onCreate();
@@ -90,23 +94,19 @@ public class TimeRecordActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.v(TAG, "산책 최종 중지");
                         // Chronometer 정지 -- ok
-                        mChronometer.stop(); // setBase 타임에 영향을 주지 않는구나 -_-
+                        mChronometer.stop(); // setBase 타임에 영향 안줌
                         mStopTime = SystemClock.elapsedRealtime();
-                        // 현재 산책 시간 저장
-                        mResultTime = mStopTime - mStartTime;
-                        Log.v(TAG, "" + getStrTime(mResultTime));
+                        // 최종 산책 시간 저장
+                        mResultTime = mStopTime - mChronometer.getBase();
+                        Log.v(TAG, "mResultTime : " + mResultTime);
 
-                        WalkTime walkTime = new WalkTime();
-                        walkTime.setWaltime(mResultTime);
                         Toast.makeText(context, "산책 시간 : " + getStrTime(mResultTime), Toast.LENGTH_SHORT).show();
+                        WalkTimeVO vo = new WalkTimeVO("1111title", "1111content", mResultTime);
+                        // 데이터베이스에 입력
+                        mDBOpenHelper.insertDiary(vo);
+                        // 데이터베이스 close();
+                        mDBOpenHelper.close();
 
-
-                        /*long time = SystemClock.elapsedRealtime() - mChronometer.getBase();
-                        mTime.setWaltime(time);
-                        Log.v(TAG, "WalkTime : " + mTime.getWaltime());
-                        Log.v(TAG, "WalkTime : " + getStrTime(time));*/
-
-                        // 메인 페이지로 이동
                         startActivity(new Intent(context, MainActivity.class));
 
 
@@ -140,8 +140,10 @@ public class TimeRecordActivity extends AppCompatActivity {
         return hh + ":" + mm + ":" + ss;
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     /*// 핸들러 생성
     static Handler mTimer = new Handler() {
