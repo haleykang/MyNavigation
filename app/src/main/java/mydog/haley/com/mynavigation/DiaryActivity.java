@@ -1,8 +1,11 @@
 package mydog.haley.com.mynavigation;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +23,7 @@ public class DiaryActivity extends AppCompatActivity {
     private WalkTimeVO mWalkTimeVO;
     private ArrayList<WalkTimeVO> mArrayList;
     private CustomAdapter mCustomAdapter;
+    private Context context = this;
 
     private ListView mListView;
 
@@ -53,12 +57,13 @@ public class DiaryActivity extends AppCompatActivity {
             Log.v(TAG, "Title : " + i.getTitle());
             Log.v(TAG, "Content : " + i.getContent());
             Log.v(TAG, "Time : " + i.getTime());
-            Log.v(TAG, "Date : " + i.getDateWithTime());
+            Log.v(TAG, "DateWithTime : " + i.getDateWithTime());
         }
 
         // 리스트뷰에 사용할 어댑터 초기화
         mCustomAdapter = new CustomAdapter(this, mArrayList);
         mListView.setAdapter(mCustomAdapter);
+
 
         // 리스트뷰의 아이템을 길게 눌렀을 경우 삭제하기 위해 롱클릭 리스너 설정
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -66,33 +71,57 @@ public class DiaryActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent,
                                            View view, int position, long id) {
 
+                // 롱 클릭한 아이템의 코드 값 가져오기
+                final int code = (int)parent.getAdapter().getItem(position);
+                final int po = position;
 
-                Log.v(TAG, "position = " + position);
-                // 리스트뷰의 position은 0부터 시작하므로 1을 더함
-                boolean result = mDBDbOpenHelper.deleteDiary(position + 1);
-                // boolean result = mDBDbOpenHelper.deleteAll();
 
-                // 포지션 값으로 삭제하면 안됨 -> 삭제하고 데이터 추가되면 DB 상 code 값은 리셋 안됨 -> 그럼 어떻게 하지? 일단 대기..
+                Log.v(TAG, "code = " + code + ", position : " + position);
 
-                Log.v(TAG, "Delete result : " + result);
+                // 최종 삭제 여부 물어보는 다이얼로그 생성
 
-                if(result) {
-                    // 정상적인 position을 가져왔을 경우 ArrayList의 position과 일치하는 정보를 삭제
-                    mArrayList.remove(position);
-                    // 어댑터에 ArrayList를 다시 셋팅
-                    mCustomAdapter.setArrayList(mArrayList);
-                    // 어댑터에 값이 변경된 것을 알려줌
-                    mCustomAdapter.notifyDataSetChanged();
-                } else {
-                    // 잘못된 position을 가져왔을 경우 다시 확인 요청
-                    Toast.makeText(DiaryActivity.this, "삭제하려는 데이터를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("산책 일기를 삭제하시겠습니까?")
+                        .setCancelable(true)
+                        .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Log.v(TAG, "산책 기록 삭제");
+                                // 코드 값 기준으로 삭제
+                                Log.v(TAG, "code = " + code + ", position : " + po);
+                                boolean result = mDBDbOpenHelper.deleteDiary(code);
+                                // boolean result = mDBDbOpenHelper.deleteAll();
 
-                }
+                                Log.v(TAG, "Delete result : " + result);
+
+                                if(result) {
+                                    // 데이터베이스 값을 정상적으로 삭제했다면 position 도 삭제
+                                    mArrayList.remove(po);
+                                    // 어댑터에 ArrayList를 다시 셋팅
+                                    mCustomAdapter.setArrayList(mArrayList);
+                                    // 어댑터에 값이 변경된 것을 알려줌
+                                    mCustomAdapter.notifyDataSetChanged();
+                                } else {
+                                    // 잘못된 position을 가져왔을 경우 다시 확인 요청
+                                    Toast.makeText(DiaryActivity.this, "삭제하려는 데이터를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+
+                                }
+
+                            }
+                        })
+                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
 
                 return false;
             }
-
-            // test
 
 
         }); // end of onItemLongClick()
@@ -116,7 +145,7 @@ public class DiaryActivity extends AppCompatActivity {
                     mCursor.getInt(mCursor.getColumnIndex("code")),
                     mCursor.getString(mCursor.getColumnIndex("title")),
                     mCursor.getString(mCursor.getColumnIndex("content")),
-                    mCursor.getInt(mCursor.getColumnIndex("time")),
+                    mCursor.getLong(mCursor.getColumnIndex("time")),
                     mCursor.getString(mCursor.getColumnIndex("date_with_time"))
             );
 
@@ -128,9 +157,6 @@ public class DiaryActivity extends AppCompatActivity {
         mCursor.close();
 
     }
-
-
-    // title - 산책 날짜 & time 산책 시간은 TimeRecord Activity에서 받아와야함
 
 
     // 액티비티 종료 될 때 DB 클로즈

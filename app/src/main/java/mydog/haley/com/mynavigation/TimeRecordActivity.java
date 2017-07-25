@@ -37,6 +37,8 @@ public class TimeRecordActivity extends AppCompatActivity {
 
     private DBOpenHelper mDBOpenHelper;
 
+
+
     /*private static long mResultTime;*/
 
 
@@ -53,7 +55,7 @@ public class TimeRecordActivity extends AppCompatActivity {
         this.mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
-                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+                long time = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
 
                 chronometer.setText(getStrTime(time));
 
@@ -96,19 +98,18 @@ public class TimeRecordActivity extends AppCompatActivity {
                         // Chronometer 정지 -- ok
                         mChronometer.stop(); // setBase 타임에 영향 안줌
                         mStopTime = SystemClock.elapsedRealtime();
-                        // 최종 산책 시간 저장
-                        mResultTime = mStopTime - mChronometer.getBase();
+                        // 최종 산책 시간 저장 -> 초 단위로 변환
+                        mResultTime = (mStopTime - mChronometer.getBase()) / 1000;
                         Log.v(TAG, "mResultTime : " + mResultTime);
 
-                        Toast.makeText(context, "산책 시간 : " + getStrTime(mResultTime), Toast.LENGTH_SHORT).show();
-                        WalkTimeVO vo = new WalkTimeVO("1111title", "1111content", mResultTime);
+                        Toast.makeText(context, "산책 시간 : " + mResultTime + "초", Toast.LENGTH_SHORT).show();
+                        WalkTimeVO vo = new WalkTimeVO(mResultTime);
                         // 데이터베이스에 입력
                         mDBOpenHelper.insertDiary(vo);
                         // 데이터베이스 close();
                         mDBOpenHelper.close();
 
                         startActivity(new Intent(context, MainActivity.class));
-
 
                     }
                 })
@@ -130,9 +131,9 @@ public class TimeRecordActivity extends AppCompatActivity {
 
     private String getStrTime(long time) {
 
-        int h = (int)(time / 3600000);
-        int m = (int)(time - h * 3600000) / 60000;
-        int s = (int)(time - h * 3600000 - m * 60000) / 1000;
+        int h = (int)(time / 3600);
+        int m = (int)(time - h * 3600) / 60;
+        int s = (int)(time - h * 3600 - m * 60);
         String hh = h < 10 ? "0" + h : h + "";
         String mm = m < 10 ? "0" + m : m + "";
         String ss = s < 10 ? "0" + s : s + "";

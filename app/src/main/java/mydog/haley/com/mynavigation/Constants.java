@@ -16,5 +16,7 @@ public class Constants {
 
     public static final int DATE_WITH_TIME = 4;
 
+    public static final int DATE_WITHOUT_TIME = 5;
+
 
 }

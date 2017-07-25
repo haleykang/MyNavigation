@@ -1,6 +1,7 @@
 package mydog.haley.com.mynavigation;
 
 import android.content.Intent;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity
 
     private TextView walkTimeTextView;
     private static final String TAG = "**MainActivity**";
+    private DBOpenHelper mDB;
+    private long mTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +61,34 @@ public class MainActivity extends AppCompatActivity
         });
 
         this.walkTimeTextView = (TextView)findViewById(R.id.walk_time);
-        // 데이터베이스에서 오늘 날짜와 동일한 데이터 값 가져오기
+       /* // 데이터베이스에서 오늘 날짜와 동일한 데이터 값 가져오기
         // 다 저장
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date = new Date();
+        String today = dateFormat.format(date);*/
 
-        Log.v(TAG, "date : " + dateFormat.format(date));
+        // 데이터 베이스 오픈
+        mDB = new DBOpenHelper(this);
+        try {
 
+            mDB.open();
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        // 기준 날짜 생성
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date date = new Date();
+        String today = dateFormat.format(date);
+
+        // 값 가져오기
+        mTime = mDB.getSumDayTime(today);
+        this.walkTimeTextView.setText(getStrTime(mTime));
+
+        // 값 추가 됐을 때 또 가져오기
+        /*Intent intent = getIntent();
+        this.walkTimeTextView.setText(intent.getStringExtra("time"));*/
 
     }
 
@@ -123,5 +146,15 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    // 출력을 00분 형태로
+    private String getStrTime(long time) {
+
+        int m = (int)time / 60;
+
+        return m + "분";
+
+
     }
 }

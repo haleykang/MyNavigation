@@ -1,34 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="8dp">
+<android.support.constraint.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:padding="@dimen/activity_vertical_margin">
 	<!--한 줄에 여러개의 list 아이템을 보여주기 위함-->
-	<TextView
-		android:id="@+id/list_code"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+	
+	<!--예쁘게 커스텀 & 삭제 & 수정 버튼  -->
+	
 	
 	<TextView
 		android:id="@+id/list_title"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textStyle="bold"/>
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:text="title"
+		android:textStyle="bold"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		/>
 	
 	<TextView
 		android:id="@+id/list_content"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:text="content"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/list_title"/>
 	
 	<TextView
 		android:id="@+id/list_time"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+		android:layout_height="wrap_content"
+		android:text="time"/>
 	
 	<TextView
 		android:id="@+id/list_date"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+		android:layout_height="wrap_content"
+		android:text="date"/>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

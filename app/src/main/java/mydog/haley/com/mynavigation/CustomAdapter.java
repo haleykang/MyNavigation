@@ -26,19 +26,24 @@ public class CustomAdapter extends BaseAdapter {
         this.mVO = mVO;
     }
 
+    // 리스트에서 보여줄 데이터 갯수
     @Override
     public int getCount() {
         return mVO.size();
     }
 
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
 
     @Override
+    public Object getItem(int i) {
+
+        // 선택한 아이템의 code 값을 리턴
+        return mVO.get(i).getCode();
+    }
+
+    // getItem() 메소드가 리턴한 객체의 고유 식별자
+    @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -48,7 +53,6 @@ public class CustomAdapter extends BaseAdapter {
         if(v == null) {
             holder = new ViewHolder();
             v = mInflater.inflate(R.layout.list_item, null);
-            holder.code = (TextView)v.findViewById(R.id.list_code);
             holder.title = (TextView)v.findViewById(R.id.list_title);
             holder.content = (TextView)v.findViewById(R.id.list_content);
             holder.time = (TextView)v.findViewById(R.id.list_time);
@@ -86,7 +90,6 @@ public class CustomAdapter extends BaseAdapter {
     // ViewHolder Class
     private class ViewHolder {
 
-        TextView code;
         TextView title;
         TextView content;
         TextView time;

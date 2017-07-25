@@ -18,8 +18,8 @@ public class DBOpenHelper {
 
     private static final String DATABASE_NAME = "MyDogDiary";
 
-    private static final int DATABASE_VERSION = 2;
-    // DATABASE_VERSION 변경 1->2
+    private static final int DATABASE_VERSION = 10;
+    // DATABASE_VERSION 변경 1->2->3->4->5->6->7->8->9
 
     public static SQLiteDatabase mDB;
 
@@ -85,13 +85,11 @@ public class DBOpenHelper {
 
     // 4. CRUD 함수 생성
 
-    // 4-1) 새로운 산책 기록 입력 함수
+    // 4-1) 새로운 산책 기록 입력 함수 -> 최초에는 title & content는 디폴트 값
     public long insertDiary(WalkTimeVO vo) {
         Log.v(TAG, "insertDiary");
         // ContentValues 에 값 저장
         ContentValues values = new ContentValues();
-        values.put(DataBase.CreatDB.TITLE, vo.getTitle());
-        values.put(DataBase.CreatDB.CONTENT, vo.getContent());
         values.put(DataBase.CreatDB.TIME, vo.getTime());
 
         // 새로운 값 추가
@@ -153,11 +151,27 @@ public class DBOpenHelper {
     }
 
     // 4-6) 날짜 기준으로 검색 - > time 값 가져오는 함수
-    public Cursor getMatchDate(String date) {
+    public Long getSumDayTime(String date) {
         // 이 값을 바꾸면 될듯 일단 테스트
-        Cursor cursor = mDB.rawQuery("select * from walktime where date ='" + date + "'", null);
-        return cursor;
+        // date_with_time (strftime('%Y-%m-%d','now','localtime'))
+        // strftime('%Y-%m-%d', date_with_time) =
+
+        long sumTime = 0;
+
+        // where date(date_with_time) =
+        String sql = "select sum(time) from walktime "
+                + "where date_with_time >= '" + date + " 00:00:00' and date_with_time <= '" + date + " 23:59:59'";
+
+        Cursor cursor = mDB.rawQuery(sql, null);
+        if(cursor.moveToFirst()) {
+
+            sumTime = cursor.getLong(0);
+        }
+
+        return sumTime;
+
     }
+}
 
 
 
@@ -222,9 +236,9 @@ public class DBOpenHelper {
 */
 
 
-    // 4. 사용자 정의 함수 - CRUD
+// 4. 사용자 정의 함수 - CRUD
 
-    // 추가 필요한 것 - 날짜 별로 시간 값 가져오는 함수
+// 추가 필요한 것 - 날짜 별로 시간 값 가져오는 함수
 
 
     /*// 4-1) 새로운 산책 기록 입력 함수
@@ -394,4 +408,4 @@ public class DBOpenHelper {
     }*/
 
 
-}
+

@@ -25,15 +25,21 @@ public class WalkTimeVO {
 
     }
 
+
     // 2-2) 기본 생성자
     public WalkTimeVO() {
 
     }
 
-    // 2-3) title, content, time 입력 받는 생성자..?
-    public WalkTimeVO(String title, String content, long time) {
+    // 2-3) title, content 입력 받는 생성자 -> update에 사용
+    public WalkTimeVO(String title, String content) {
         this.title = title;
         this.content = content;
+
+    }
+
+    // 2-4 ) time만 입력받는 생성자
+    public WalkTimeVO(long time) {
         this.time = time;
     }
 
@@ -80,7 +86,6 @@ public class WalkTimeVO {
     }
 
 
-    // 3. toString 함수 재정의
     @Override
     public String toString() {
         return "WalkTimeVO{" +
@@ -91,4 +96,7 @@ public class WalkTimeVO {
                 ", dateWithTime='" + dateWithTime + '\'' +
                 '}';
     }
+
+
+
 }

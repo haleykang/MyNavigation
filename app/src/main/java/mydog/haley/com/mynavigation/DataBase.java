@@ -26,10 +26,11 @@ public class DataBase {
 
         public static final String _CREATE = "create table " + _TABLENAME + "("
                 + CODE + " integer primary key autoincrement , "
-                + TITLE + " text not null,"
-                + CONTENT + " text not null,"
+                + TITLE + " text default (strftime('%m-%d','now','localtime')),"
+                + CONTENT + " text default '산책 메모를 작성해주세요',"
                 + TIME + " integer not null,"
-                + DATE_WITH_TIME + " datetime default (datetime('now','localtime'))" + ")";
+                + DATE_WITH_TIME + " datetime default (datetime('now','localtime'))"
+                + ")";
 
     }
 }
