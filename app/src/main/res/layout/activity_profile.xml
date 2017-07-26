@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context="mydog.haley.com.mynavigation.ProfileActivity">
+	
+	<!--강아지 프로필 설정 화면-->
+	<!--Main에서 프로필 사진 클릭 시 이동-->
+	<!--네비게이션 창에서 에디트 이미지 클릭 시 이동-->
+	
+	<!--Appbar 부분 변경-->
+	<!--사랑하는 반려견의 정보를 입력해주세요-->
+	
+	<View
+		android:id="@+id/view"
+		android:layout_width="0dp"
+		android:layout_height="@dimen/nav_header_height"
+		android:background="@color/colorAccent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"/>
+	
+	<!--디폴트 이미지 바꾸기-->
+	<de.hdodenhof.circleimageview.CircleImageView
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/profile_image"
+		android:layout_width="100dp"
+		android:layout_height="100dp"
+		android:src="@drawable/gangnam"
+		app:civ_border_color="#ffffff"
+		app:civ_border_width="1dp"
+		app:layout_constraintBottom_toBottomOf="@+id/view"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:layout_editor_absoluteX="142dp"/>
+	
+	<ImageView
+		android:id="@+id/add_photo_bt"
+		android:layout_width="50dp"
+		android:layout_height="50dp"
+		android:src="@drawable/ic_profile_photo"
+		app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+		app:layout_constraintEnd_toEndOf="@+id/profile_image"
+		app:layout_constraintStart_toStartOf="@+id/profile_image"
+		app:layout_constraintTop_toTopOf="@+id/profile_image"/>
+	
+	<EditText
+		android:id="@+id/dog_name_et"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:hint="이름"
+		app:layout_constraintEnd_toStartOf="@+id/gender_group"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/view"/>
+	
+	<RadioGroup
+		android:id="@+id/gender_group"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		app:layout_constraintBottom_toBottomOf="@+id/dog_name_et"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@+id/dog_name_et"
+		app:layout_constraintTop_toBottomOf="@+id/view"
+		>
+		
+		<RadioButton
+			android:id="@+id/gender_w"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="암컷"/>
+		
+		<RadioButton
+			android:id="@+id/gender_m"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="수컷"/>
+	
+	</RadioGroup>
+	
+	<!--생일-->
+	
+	<!--몸무게-->
+	
+	<!--반려견 종 -->
+	
+	<!--나와의 관계-->
+	
+	<!--저장 버튼-->
+
+
+</android.support.constraint.ConstraintLayout>

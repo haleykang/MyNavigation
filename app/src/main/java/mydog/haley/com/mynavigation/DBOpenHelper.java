@@ -111,6 +111,9 @@ public class DBOpenHelper {
                 String whereClause, String[] whereArgs)
          */
 
+        // 이렇게 업데이트 하면 안됨..
+
+
         boolean result = mDB.update(DataBase.CreatDB._TABLENAME, values,
                 "code=" + vo.getCode(), null) > 0;
 

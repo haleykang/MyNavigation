@@ -88,39 +88,74 @@ public class TimeRecordActivity extends AppCompatActivity {
 
         Log.v(TAG, "산책 중지 버튼 클릭");
 
+        long tempTime = (SystemClock.elapsedRealtime() - mChronometer.getBase()) / 1000;
+        Log.v(TAG, "tempTime : " + tempTime);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("산책을 종료할까요?")
-                .setCancelable(true)
-                .setPositiveButton("예", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.v(TAG, "산책 최종 중지");
-                        // Chronometer 정지 -- ok
-                        mChronometer.stop(); // setBase 타임에 영향 안줌
-                        mStopTime = SystemClock.elapsedRealtime();
-                        // 최종 산책 시간 저장 -> 초 단위로 변환
-                        mResultTime = (mStopTime - mChronometer.getBase()) / 1000;
-                        Log.v(TAG, "mResultTime : " + mResultTime);
+        // 산책 시간이 60초 미만 일 때
+        if(tempTime < 60) {
+            builder.setMessage("1분 미만의 산책은 기록되지 않습니다.\n산책을 그만할까요?")
+                    .setCancelable(true)
+                    .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // Chronometer 정지 -- ok
+                            mChronometer.stop(); // setBase 타임에 영향 안줌
 
-                        Toast.makeText(context, "산책 시간 : " + mResultTime + "초", Toast.LENGTH_SHORT).show();
-                        WalkTimeVO vo = new WalkTimeVO(mResultTime);
-                        // 데이터베이스에 입력
-                        mDBOpenHelper.insertDiary(vo);
-                        // 데이터베이스 close();
-                        mDBOpenHelper.close();
+                            Toast.makeText(context, "산책을 종료하였습니다.", Toast.LENGTH_SHORT).show();
 
-                        startActivity(new Intent(context, MainActivity.class));
+                            Intent intent = new Intent(context, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
 
-                    }
-                })
-                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.v(TAG, "다이얼로그 취소");
-                        dialogInterface.cancel();
+                        }
+                    })
+                    .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Log.v(TAG, "다이얼로그 취소");
+                            dialogInterface.cancel();
 
-                    }
-                });
+                        }
+                    });
+
+        } else {
+
+            builder.setMessage("산책을 그만할까요?")
+                    .setCancelable(true)
+                    .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Log.v(TAG, "산책 최종 중지");
+                            // Chronometer 정지 -- ok
+                            mChronometer.stop(); // setBase 타임에 영향 안줌
+                            mStopTime = SystemClock.elapsedRealtime();
+                            // 최종 산책 시간 저장 -> 초 단위로 변환
+                            mResultTime = (mStopTime - mChronometer.getBase()) / 1000;
+                            Log.v(TAG, "mResultTime : " + mResultTime);
+
+                            Toast.makeText(context, "산책 시간 : " + mResultTime + "초", Toast.LENGTH_SHORT).show();
+                            WalkTimeVO vo = new WalkTimeVO(mResultTime);
+                            // 데이터베이스에 입력
+                            mDBOpenHelper.insertDiary(vo);
+                            // 데이터베이스 close();
+                            mDBOpenHelper.close();
+
+                            startActivity(new Intent(context, DiaryActivity.class));
+
+                        }
+                    })
+                    .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Log.v(TAG, "다이얼로그 취소");
+                            dialogInterface.cancel();
+
+                        }
+                    });
+
+        }
+
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
@@ -139,6 +174,12 @@ public class TimeRecordActivity extends AppCompatActivity {
         String ss = s < 10 ? "0" + s : s + "";
 
         return hh + ":" + mm + ":" + ss;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        // 뒤로 버튼 눌러도 산책 기록 중지 X
     }
 
     @Override

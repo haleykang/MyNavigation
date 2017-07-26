@@ -50,6 +50,12 @@
 		app:layout_constraintTop_toTopOf="@+id/view"
 		/>
 	
+	<Button
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:id="@+id/test"
+		android:text="test"/>
+	
 	
 	<Button
 		android:id="@+id/go_bt"

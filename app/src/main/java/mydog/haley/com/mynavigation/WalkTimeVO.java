@@ -32,7 +32,8 @@ public class WalkTimeVO {
     }
 
     // 2-3) title, content 입력 받는 생성자 -> update에 사용
-    public WalkTimeVO(String title, String content) {
+    public WalkTimeVO(int code, String title, String content) {
+        this.code = code;
         this.title = title;
         this.content = content;
 
@@ -96,7 +97,6 @@ public class WalkTimeVO {
                 ", dateWithTime='" + dateWithTime + '\'' +
                 '}';
     }
-
 
 
 }

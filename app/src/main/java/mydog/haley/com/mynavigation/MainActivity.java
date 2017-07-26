@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,13 +28,17 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "**MainActivity**";
     private DBOpenHelper mDB;
     private long mTime;
+    private String mToday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.v(TAG, "onCreate()");
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -55,17 +60,19 @@ public class MainActivity extends AppCompatActivity
 
                 // 산책 기록 화면으로 이동
                 // 일단 스톱워치 화면으로 먼저 이동
-                startActivity(new Intent(MainActivity.this, TimeRecordActivity.class));
+
+                Intent intent = new Intent(MainActivity.this, TimeRecordActivity.class);
+                // 이건 다시 공부하고 설정하자... 휴...
+                // 산책 시간을 기록하고 메인으로 이동했을 때 추가된 값이 자동으로 적용 안됨
+                // -> 새로고침 버튼을 만들거나 플래그를 다시 설정해서 하든가 아님 onNewIntent() 함수 재사용 해보거나..
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
 
             }
         });
 
         this.walkTimeTextView = (TextView)findViewById(R.id.walk_time);
-       /* // 데이터베이스에서 오늘 날짜와 동일한 데이터 값 가져오기
-        // 다 저장
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        Date date = new Date();
-        String today = dateFormat.format(date);*/
+
 
         // 데이터 베이스 오픈
         mDB = new DBOpenHelper(this);
@@ -80,16 +87,26 @@ public class MainActivity extends AppCompatActivity
         // 기준 날짜 생성
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date = new Date();
-        String today = dateFormat.format(date);
+        mToday = dateFormat.format(date);
 
-        // 값 가져오기
-        mTime = mDB.getSumDayTime(today);
+        // 값 가져오기 -> 갱신 했을 때 대비하기...흠...
+        mTime = mDB.getSumDayTime(mToday);
         this.walkTimeTextView.setText(getStrTime(mTime));
 
-        // 값 추가 됐을 때 또 가져오기
-        /*Intent intent = getIntent();
-        this.walkTimeTextView.setText(intent.getStringExtra("time"));*/
 
+        // mDB.close();
+
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Log.v(TAG, "onNewIntent()");
+
+        mTime = mDB.getSumDayTime(mToday);
+        this.walkTimeTextView.setText(getStrTime(mTime));
     }
 
     @Override

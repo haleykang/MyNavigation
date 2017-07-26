@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/dialog_edit"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+	
+	<TextView
+		android:id="@+id/header_dialog"
+		android:layout_width="match_parent"
+		android:layout_height="50dp"
+		android:background="@color/colorPrimary"
+		android:gravity="center"
+		android:text="산책 일기 수정"
+		android:textColor="#FFFFFF"
+		android:textSize="20dp"
+		android:textStyle="bold"/>
+	
+	<EditText
+		android:id="@+id/title_et"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="@dimen/activity_horizontal_margin"
+		android:layout_marginStart="@dimen/activity_horizontal_margin"
+		android:layout_marginTop="@dimen/activity_horizontal_margin"
+		android:hint="제목을 입력하세요."
+		android:selectAllOnFocus="true"/>
+	
+	<EditText
+		android:id="@+id/content_et"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="@dimen/activity_horizontal_margin"
+		android:layout_marginStart="@dimen/activity_horizontal_margin"
+		android:gravity="top"
+		android:hint="내용을 입력하세요."
+		android:lines="3"
+		android:selectAllOnFocus="true"/>
+	
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="@dimen/activity_horizontal_margin"
+		android:layout_marginStart="@dimen/activity_horizontal_margin"
+		android:orientation="horizontal">
+		
+		<Button
+			android:id="@+id/cancel_bt"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="취소"/>
+		
+		<Button
+			android:id="@+id/save_bt"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="저장"/>
+	
+	</LinearLayout>
+
+
+</LinearLayout>
