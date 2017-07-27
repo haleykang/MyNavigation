@@ -29,11 +29,21 @@ public class MainActivity extends AppCompatActivity
     private DBOpenHelper mDB;
     private long mTime;
     private String mToday;
+    private TextView todayTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button bu = (Button)findViewById(R.id.test);
+        bu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ChartActivity.class));
+            }
+        });
 
         Log.v(TAG, "onCreate()");
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -72,6 +82,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         this.walkTimeTextView = (TextView)findViewById(R.id.walk_time);
+        this.todayTextView = (TextView)findViewById(R.id.today_tv);
 
 
         // 데이터 베이스 오픈
@@ -87,10 +98,13 @@ public class MainActivity extends AppCompatActivity
         // 기준 날짜 생성
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date = new Date();
-        mToday = dateFormat.format(date);
+        mToday = dateFormat.format(date).trim();
 
         // 값 가져오기 -> 갱신 했을 때 대비하기...흠...
         mTime = mDB.getSumDayTime(mToday);
+        Log.v(TAG, "시간 mTime : " + mTime);
+
+        this.todayTextView.setText(mToday);
         this.walkTimeTextView.setText(getStrTime(mTime));
 
 
@@ -172,6 +186,13 @@ public class MainActivity extends AppCompatActivity
 
         return m + "분";
 
+
+    }
+
+    public void toProfile(View v) {
+
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
 
     }
 }

@@ -7,4 +7,6 @@
 	<dimen name="fab_margin">16dp</dimen>
 	<dimen name="profile_size">100dp</dimen>
 	<dimen name="stopwatch">50dp</dimen>
+	<dimen name="width">280dp</dimen>
+	<dimen name="vertical_margin_half">8dp</dimen>
 </resources>

@@ -12,7 +12,9 @@
 	<!--메인화면 구성 : 일단 바꿀거야 -->
 	<include
 		android:id="@+id/profile_header"
-		layout="@layout/profile_header"/>
+		layout="@layout/profile_header"
+		tools:layout_editor_absoluteY="0dp"
+		tools:layout_editor_absoluteX="0dp"/>
 	
 	<!--뷰 - 오늘 산책 시간 -> 달력 보여주는 뷰 추가 -->
 	
@@ -28,14 +30,24 @@
 		app:layout_constraintTop_toBottomOf="@+id/profile_header"/>
 	
 	<TextView
+		android:id="@+id/today_tv"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_marginBottom="@dimen/vertical_margin_half"
+		android:text="2017-07-27"
+		app:layout_constraintBottom_toTopOf="@+id/text"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"/>
+	
+	<TextView
+		android:id="@+id/text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="@dimen/vertical_margin_half"
 		android:text="오늘의 산책 시간"
 		app:layout_constraintBottom_toTopOf="@+id/walk_time"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		
-		/>
+		app:layout_constraintStart_toStartOf="parent"/>
 	
 	<TextView
 		android:id="@+id/walk_time"
@@ -51,9 +63,9 @@
 		/>
 	
 	<Button
+		android:id="@+id/test"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:id="@+id/test"
 		android:text="test"/>
 	
 	

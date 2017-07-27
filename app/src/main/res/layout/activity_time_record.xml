@@ -11,6 +11,7 @@
 	<!--색은 다 바꿀예정-->
 	<!--위에 AppBar 없애고 싶은데 -->
 	
+	
 	<View
 		android:id="@+id/view"
 		android:layout_width="0dp"
@@ -57,6 +58,7 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/chronometer"/>
 	
+	
 	<View
 		android:id="@+id/view2"
 		android:layout_width="0dp"
@@ -64,9 +66,7 @@
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/view"
-		app:layout_constraintVertical_bias="0.0"
-		tools:layout_editor_absoluteX="0dp"/>
+		app:layout_constraintTop_toBottomOf="@+id/view"/>
 	
 	
 	<android.support.design.widget.FloatingActionButton
@@ -80,14 +80,17 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="@+id/view2"/>
 	
-	<!--<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="@dimen/activity_vertical_margin"
-		android:text="산책 종료"
+	<!--산책 종료 되면 보이는 레이아웃 -->
+	
+	<include
+		layout="@layout/recode_layout"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:visibility="invisible"
+		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/stop_bt"/>-->
+		app:layout_constraintTop_toBottomOf="@+id/view"/>
 
 
 </android.support.constraint.ConstraintLayout>

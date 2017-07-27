@@ -165,11 +165,17 @@ public class DBOpenHelper {
         String sql = "select sum(time) from walktime "
                 + "where date_with_time >= '" + date + " 00:00:00' and date_with_time <= '" + date + " 23:59:59'";
 
+    /*    // SQL 쉽게 수정 -> 왜 안될까??????
+        String sql = "select sum(time) from walktime "
+                + "where strftime('%Y-%m-%d',date_with_time)=" + date;*/
+
         Cursor cursor = mDB.rawQuery(sql, null);
         if(cursor.moveToFirst()) {
 
             sumTime = cursor.getLong(0);
         }
+
+        cursor.close();
 
         return sumTime;
 

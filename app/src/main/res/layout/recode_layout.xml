@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:gravity="center"
+	android:orientation="vertical">
+	
+	
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:text="산책 중 기억에 남는 이야기를 기록해보세요."/>
+	
+	<EditText
+		android:id="@+id/title_et"
+		android:layout_width="@dimen/width"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/vertical_margin_half"
+		android:hint="제목"
+		android:selectAllOnFocus="true"/>
+	
+	<EditText
+		android:id="@+id/content_et"
+		android:layout_width="@dimen/width"
+		android:layout_height="wrap_content"
+		android:gravity="top"
+		android:hint="내용을 입력하세요."
+		android:lines="3"
+		android:selectAllOnFocus="true"/>
+	
+	<LinearLayout
+		android:layout_width="@dimen/width"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		
+		<Button
+			android:id="@+id/to_list_bt"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="저장"/>
+		
+		<Button
+			android:id="@+id/to_main_bt"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="메인으로"/>
+	
+	
+	</LinearLayout>
+
+
+</LinearLayout>
